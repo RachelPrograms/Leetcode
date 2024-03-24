@@ -1,0 +1,47 @@
+public class Solution {
+    public double FindMedianSortedArrays(int[] nums1, int[] nums2) {
+        int medianIndex = (int)Math.Ceiling((double)(nums1.Length + nums2.Length) / 2) - 1;
+
+        bool hasExactMiddle = (nums1.Length + nums2.Length) % 2 == 1 ? true : false;
+
+        if(!hasExactMiddle) {
+            medianIndex++;
+        }
+
+        int[] mergedArray = new int[medianIndex + 1];
+
+        int nums1Index = 0;
+        int nums2Index = 0;
+        int smallerNum = -1;
+
+        for(int i = 0; i <= medianIndex; i++) {
+            if(nums1Index < nums1.Length && nums2Index < nums2.Length) {
+                if(nums1[nums1Index] <= nums2[nums2Index]) {
+                    smallerNum = nums1[nums1Index];
+                    nums1Index++;
+                }
+                else {
+                    smallerNum = nums2[nums2Index];
+                    nums2Index++;
+                }
+                
+            }
+            else if(nums1Index < nums1.Length) {
+                smallerNum = nums1[nums1Index];
+                nums1Index++;
+            }
+            else {
+                smallerNum = nums2[nums2Index];
+                nums2Index++;
+            }
+
+            mergedArray[i] = smallerNum;
+        }
+
+        if(hasExactMiddle) {
+            return mergedArray[medianIndex];
+        }
+
+        return ((double)mergedArray[medianIndex] + mergedArray[medianIndex - 1]) / 2;
+    }
+}
